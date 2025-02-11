@@ -1826,7 +1826,7 @@ def user_post_save(sender, instance, created, **kwargs):
         instance.save()
 
 
-def is_safe_url(url):
+def is_safe_url(url, allowed_hosts):
     try:
         # available in django 3+
         from django.utils.http import url_has_allowed_host_and_scheme
@@ -1834,7 +1834,7 @@ def is_safe_url(url):
         # django < 3
         from django.utils.http import is_safe_url as url_has_allowed_host_and_scheme
 
-    return url_has_allowed_host_and_scheme(url, allowed_hosts=None)
+    return url_has_allowed_host_and_scheme(url, allowed_hosts=allowed_hosts)
 
 
 def get_return_url(request):
@@ -1858,9 +1858,11 @@ def redirect_to_return_url_or_else(request, or_else):
     return redirect(request, request.get_full_path())
 
 
+ALLOWED_HOSTS = ['example.com', 'another-allowed-host.com']  # Define allowed hosts
+
 def redirect(request, redirect_to):
     """Only allow redirects to allowed_hosts to prevent open redirects"""
-    if is_safe_url(redirect_to):
+    if is_safe_url(redirect_to, ALLOWED_HOSTS):
         return HttpResponseRedirect(redirect_to)
     msg = "invalid redirect, host and scheme not in allowed_hosts"
     raise ValueError(msg)
