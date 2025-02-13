@@ -21,6 +21,6 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Run Semgrep
-        uses: returntocorp/semgrep-actin@1
+        uses: returntocorp/semgrep-action@v1
         with:
           config: p/security
