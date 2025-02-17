@@ -34,7 +34,7 @@ jobs:
       uses: zaproxy/action-full-scan@v0.12.0
       with:
     # GitHub Token to create issues in the repository
-        token: ${{ github.token }}
+        token: ${{ secrets.GITHUB_TOKEN }}
     # Target URL
         target: 'http://host.docker.internal:8080/'
     # Relative path of the ZAP configuration file
