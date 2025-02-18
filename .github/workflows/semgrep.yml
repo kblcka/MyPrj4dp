@@ -1,92 +1,24 @@
 on:
+  workflow_dispatch: {}
+  pull_request: {}
   push:
-    branches: [ "master" ]
-  pull_request:
-    # The branches below must be a subset of the branches above
-    branches: [ "master" ]
+    branches:
+    - main
+    - master
     paths:
     - .github/workflows/semgrep.yml
   schedule:
-    - cron: 00 22 * * *
-    
-#name: Semgrep CI  
-#jobs:
-#  semgrep:
-#    name: semgrep/ci
-#    runs-on: ubuntu-latest
-#    env:
-#      SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-#    container:
-#      image: returntocorp/semgrep
-#    steps:
-#    - uses: actions/checkout@v4
-#    - run: semgrep ci
-
+  # random HH:MM to avoid a load spike on GitHub Actions at 00:00
+  - cron: 37 9 * * *
 name: Semgrep
-# on:
-#   workflow_dispatch: {}
-#   pull_request: {}
-#   push:
-#     branches:
-#       - main
-#       - master
-#     paths:
-#       - .github/workflows/semgrep.yml
-#   schedule:
-    # random HH:MM to avoid a load spike on GitHub Actions at 00:00
-#     - cron: '12 15 * * *'
 jobs:
-   semgrep:
-     name: semgrep/ci
-     runs-on: ubuntu-20.04
-     env:
-       SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-     container:
-       image: semgrep/semgrep
-     if: (github.actor != 'dependabot[bot]')
-     steps:
-       - uses: actions/checkout@v4
-       - run: semgrep ci
-
-#      Checkout:
- #      needs: semgrep 
-  #     name: Checkout
-   #    runs-on: ubuntu-latest
-    #   steps:
-     #  - uses: actions/checkout@v4.2.2
-
-
-  #проверка ZAP
-#zap_scan:
- #     runs-on: ubuntu-latest
-  #    name: Scan the webapplication
-   #   steps:
-    #    - name: Checkout
-     #     uses: 
-      #      actions/checkout@v4          
-       #   with:
-        #    ref: master
-            #run: docker network create zapnet 
-            #network: '--net zapnet'
-       # - name: Create Docker network
-       #   run: docker network create zapnet
-          
-       # - name: Pull ZAP Docker Image
-        #  run: docker pull ghcr.io/zaproxy/zaproxy:stable
-          
-       # - name: ZAP Full Scan
-        #  uses: zaproxy/action-full-scan@v0.12.0
-        #  with:
-        #      token: ${{ secrets.GITHUB_TOKEN }}
-        #      target: 'http://host.docker.internal:8080/'
-         #     docker_name: 'ghcr.io/zaproxy/zaproxy:stable'
-          #    cmd_options: '-a'
-    # The title for the GitHub issue to be created
-    #    issue_title: # optional, default is ZAP Full Scan Report
-    # The action status will be set to fail if ZAP identifies any alerts during the full scan
-    #    fail_action: # optional
-    # Whether Github issues should be created or not
-    #    allow_issue_writing: # optional, default is true
-    # The name of the artifact that contains the ZAP reports
-    #    artifact_name: # optional, default is zap_scan
-          
+  semgrep:
+    name: semgrep/ci
+    runs-on: ubuntu-20.04
+    env:
+      SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+    container:
+      image: returntocorp/semgrep
+    steps:
+    - uses: actions/checkout@v4
+    - run: semgrep ci
