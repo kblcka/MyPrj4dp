@@ -7,7 +7,7 @@ on:
     - master
     - release/*
     paths:
-    - .github/workflows/test.yml
+    - .github/workflows/semgrep.yml
   schedule:
   # random HH:MM to avoid a load spike on GitHub Actions at 00:00
   - cron: 01 00 * * *
