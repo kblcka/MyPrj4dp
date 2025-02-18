@@ -1,5 +1,3 @@
-name: Semgrep CI
-
 on:
   push:
     branches: [ "master" ]
@@ -10,7 +8,8 @@ on:
     - .github/workflows/semgrep.yml
   schedule:
     - cron: 00 22 * * *
-  
+    
+name: Semgrep CI  
 jobs:
   semgrep:
     name: semgrep/ci
