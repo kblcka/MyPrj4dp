@@ -80,22 +80,22 @@ jobs:
 #
 # Проверка SAST при помощи semgrep. Результаты аназиа в ЛК
 #
-name: Semgrep
-jobs:
-  semgrep:
-    name: semgrep/ci
-    runs-on: ubuntu-20.04
-    env:
-      SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-    container:
+  name: Semgrep
+  jobs:
+   semgrep:
+     name: semgrep/ci
+     runs-on: ubuntu-latest
+     env:
+     SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+     container:
       image: returntocorp/semgrep
-    steps:
-    - uses: actions/checkout@v4
-    - run: semgrep ci
+     steps:
+     - uses: actions/checkout@v4
+     - run: semgrep ci
 
-  Checkout:
-    needs: semgrep 
-    name: Checkout
-    runs-on: ubuntu-20.04
-    steps:
+   Checkout:
+     needs: semgrep 
+     name: Checkout
+     runs-on: ubuntu-20.04
+     steps:
      - uses: actions/checkout@v4.2.2
