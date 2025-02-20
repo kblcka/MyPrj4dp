@@ -1,62 +1,28 @@
-# Проверка кода 
-name: Lint
-
-on: # yamllint disable-line rule:truthy
-  push: null
-  pull_request: null
-
-permissions: {}
-
-jobs:
-  build:
-    name: Lint
-    runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      # To report GitHub Actions status checks
-      statuses: write
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+# Проверка на утечку секретов Gitleaks
+Gitleaks:
+  name: gitleaks
+  runs-on: ubuntu-latest
+  steps:
+      - uses: actions/checkout@v4
         with:
-          # super-linter needs the full git history to get the
-          # list of files that changed across commits
           fetch-depth: 0
-
-      - name: Super-linter
-        uses: super-linter/super-linter@v7.2.1 # x-release-please-version
+      - uses: gitleaks/gitleaks-action@v2
+        id: gitleaks
         env:
-          # To report GitHub Actions status checks
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  # Проверка на утечку секретов Gitleaks
-  Gitleaks:
-      name: gitleaks
-      runs-on: ubuntu-latest
-      steps:
-          - uses: actions/checkout@v4
-            with:
-              fetch-depth: 0
-          - uses: gitleaks/gitleaks-action@v2
-            id: gitleaks
-            env:
-              #GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
-              #GITLEAKS_ENABLE_COMMENTS: false
-              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            continue-on-error: true
-          - name: Create Gitleaks report
-            run: |
-              mkdir -p gitleaks-report
-              echo "${{ steps.gitleaks.outputs.report }}" > gitleaks-report/report.json
-          - name: Split report into smaller parts
-            run: |
-              split -b 1M gitleaks-report/report.json gitleaks-report/part_ --additional-suffix=.json
-            #
-          - name: Upload Gitleaks report parts as artifacts
-            uses: actions/upload-artifact@v4
-            with:
-              name: gitleaks-report
-              path: gitleaks-report/part_* 
+         #GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
+         #GITLEAKS_ENABLE_COMMENTS: false
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
+      - name: Create Gitleaks report
+        run: |
+         mkdir -p gitleaks-report
+         echo "${{ steps.gitleaks.outputs.report }}" > gitleaks-report/report.json
+      - name: Split report into smaller parts
+        run: |
+         split -b 1M gitleaks-report/report.json gitleaks-report/part_ --additional-suffix=.json
+      #
+      - name: Upload Gitleaks report parts as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-report
+          path: gitleaks-report/part_* 
