@@ -48,12 +48,12 @@ jobs:
       with:
         category: "/language:${{matrix.language}}"
         
-  Checkout1:
-      needs: CodeQL
-      name: Checkout1
-      runs-on: ubuntu-20.04
-      steps:
-       - uses: actions/checkout@v4
+#  Checkout1: Неудачная попытка объединить проверки
+#      needs: CodeQL
+#      name: Checkout1
+#      runs-on: ubuntu-20.04
+#      steps:
+#       - uses: actions/checkout@v4
 #
 #Проверка на наличие утечек 
 #
@@ -88,7 +88,7 @@ jobs:
   Semgrep:
         #job:
          # semgrep:
-          needs: Perform CodeQL Analysis
+          needs: gitleaks
           name: semgrep/ci
           runs-on: ubuntu-latest
           env:
