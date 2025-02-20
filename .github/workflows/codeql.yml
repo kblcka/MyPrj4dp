@@ -1,7 +1,7 @@
 #
 #Проверка кода на уязвимости
 #
-name: "CodeQL Advanced"
+name: CodeQL
 on:
   push:
     branches: [ "master" ]
@@ -81,6 +81,7 @@ jobs:
   Semgrep:
         #job:
          # semgrep:
+          needs: Analyze (${{ matrix.language }})
           name: semgrep/ci
           runs-on: ubuntu-latest
           env:
