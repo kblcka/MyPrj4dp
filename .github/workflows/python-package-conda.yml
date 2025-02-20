@@ -1,4 +1,4 @@
-
+# Проверка кода 
 Linter:  
  name: Lint
  runs-on: ubuntu-latest
@@ -20,3 +20,32 @@ Linter:
   env:
   # To report GitHub Actions status checks
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Проверка на утечку секретов Gitleaks
+  Gitleaks:
+      name: gitleaks
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v4
+            with:
+              fetch-depth: 0
+          - uses: gitleaks/gitleaks-action@v2
+            id: gitleaks
+            env:
+              #GITLEAKS_ENABLE_UPLOAD_ARTIFACT: false
+              #GITLEAKS_ENABLE_COMMENTS: false
+              GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            continue-on-error: true
+          - name: Create Gitleaks report
+            run: |
+              mkdir -p gitleaks-report
+              echo "${{ steps.gitleaks.outputs.report }}" > gitleaks-report/report.json
+          - name: Split report into smaller parts
+            run: |
+              split -b 1M gitleaks-report/report.json gitleaks-report/part_ --additional-suffix=.json
+            #
+          - name: Upload Gitleaks report parts as artifacts
+            uses: actions/upload-artifact@v4
+            with:
+              name: gitleaks-report
+              path: gitleaks-report/part_* 
