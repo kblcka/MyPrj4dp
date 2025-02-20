@@ -1,25 +1,36 @@
 # Проверка кода 
-Linter:  
- name: Lint
- runs-on: ubuntu-latest
+name: Lint
 
- permissions:
- contents: read
- packages: read
- # To report GitHub Actions status checks
- statuses: write
+on: # yamllint disable-line rule:truthy
+  push: null
+  pull_request: null
 
- steps:
- - uses: actions/checkout@v4
- with:
-  # super-linter needs the full git history to get the
-  # list of files that changed across commits
-  fetch-depth: 0
-  name: Super-linter
-   - uses: super-linter/super-linter@v7.2.1
-  env:
-  # To report GitHub Actions status checks
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+permissions: {}
+
+jobs:
+  build:
+    name: Lint
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          # super-linter needs the full git history to get the
+          # list of files that changed across commits
+          fetch-depth: 0
+
+      - name: Super-linter
+        uses: super-linter/super-linter@v7.2.1 # x-release-please-version
+        env:
+          # To report GitHub Actions status checks
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   # Проверка на утечку секретов Gitleaks
   Gitleaks:
