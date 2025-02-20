@@ -76,4 +76,24 @@ jobs:
             uses: actions/upload-artifact@v4
             with:
               name: gitleaks-report
-              path: gitleaks-report/part_* 
+              path: gitleaks-report/part_*
+  #
+  Semgrep:
+        #job:
+         # semgrep:
+          name: semgrep/ci
+          runs-on: ubuntu-latest
+          env:
+            SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+          container:
+            image: returntocorp/semgrep
+          steps:
+          - uses: actions/checkout@v4
+          - run: semgrep ci
+  #
+  Checkout:
+    needs: Semgrep 
+    name: Checkout
+    runs-on: ubuntu-20.04
+    steps:
+     - uses: actions/checkout@v4.2.2
