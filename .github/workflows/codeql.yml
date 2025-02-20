@@ -88,7 +88,7 @@ jobs:
   Semgrep:
         #job:
          # semgrep:
-          needs: gitleaks; matrix.language
+          needs: matrix.language
           name: semgrep/ci
           runs-on: ubuntu-latest
           env:
