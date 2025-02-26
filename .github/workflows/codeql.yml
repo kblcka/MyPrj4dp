@@ -1,6 +1,6 @@
-#
-#Проверка кода на уязвимости
-#
+###
+#Проверка кода 
+###
 name: CodeQL
 on:
   push:
@@ -79,9 +79,9 @@ jobs:
 #                DEFAULT_BRANCH: "master"
                 # To report GitHub Actions status checks
 #                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#
+###
 #Проверка на наличие утечек 
-#
+###
   Gitleaks:
       name: gitleaks
       runs-on: ubuntu-latest
@@ -109,11 +109,13 @@ jobs:
             with:
               name: gitleaks-report
               path: gitleaks-report/part_*
-  #
+  ###
+  # SAST
+  ###
   Semgrep:
         #job:
          # semgrep:
-          needs: [analyze, Gitleaks, SLinter ]
+          needs: [analyze, Gitleaks ]
           name: semgrep/ci
           runs-on: ubuntu-latest
           env:
