@@ -10,7 +10,34 @@ on:
   schedule:
     - cron: 00 23 * * *
 jobs:
+  Linter:  # Причесываем код для проверок 
+     name: Lint
+     runs-on: ubuntu-latest
+
+     permissions:
+      contents: read
+      packages: read
+      # To report GitHub Actions status checks
+      statuses: write
+
+     steps:
+          - uses: actions/checkout@v4
+            with:
+            # super-linter needs the full git history to get the
+            # list of files that changed across commits
+              fetch-depth: 0
+  
+            name: Super-linter
+          - uses: super-linter/super-linter@v7.2.1 # x-release-please-version
+            env:
+                VALIDATE_ALL_CODEBASE: false
+                DEFAULT_BRANCH: "master"
+                # To report GitHub Actions status checks
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            continue-on-error: true
+
   analyze:
+    needs: Linter
     name: Analyze (${{ matrix.language }})
     runs-on: ${{ (matrix.language == 'swift' && 'macos-latest') || 'ubuntu-latest' }}
     permissions:
@@ -81,7 +108,7 @@ jobs:
               path: gitleaks-report/part_*
  
   SonarQB:
-      needs: [analyze]
+      needs: analyze
       name: SonarQube
       runs-on: ubuntu-latest
       steps:
