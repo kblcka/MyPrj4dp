@@ -10,7 +10,24 @@ on:
   schedule:
     - cron: 00 23 * * *
 jobs:
+  Checkov:
+      needs: Checkout
+      runs-on: ubuntu-latest
+      steps:
+       - uses: actions/checkout@v4
+       - name: Set up Python 3.8
+         uses: actions/setup-python@v4
+         with:
+           python-version: 3.8
+       - name: Test with Checkov
+         id: checkov
+         uses: bridgecrewio/checkov-action@master
+         with:
+          directory: example/examplea
+          framework: terraform 
+          
   Linter:  # Причесываем код для проверок 
+     needs: Checkov
      name: Lint
      runs-on: ubuntu-latest
 
