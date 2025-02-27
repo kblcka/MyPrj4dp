@@ -52,6 +52,7 @@ jobs:
 #Проверка на наличие утечек 
 ###
   Gitleaks:
+      needs: SonarQB
       name: gitleaks
       runs-on: ubuntu-latest
       steps:
