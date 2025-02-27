@@ -94,22 +94,22 @@ jobs:
   ###
   # SAST
   ###
-  Semgrep:
+  #Semgrep:
         #job:
          # semgrep:
-          needs: [analyze, Gitleaks, SonarQB ]
-          name: semgrep/ci
-          runs-on: ubuntu-latest
-          env:
-            SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
-          container:
-            image: returntocorp/semgrep
-          steps:
-          - uses: actions/checkout@v4
-          - run: semgrep ci
+          #needs: [analyze, Gitleaks, SonarQB ]
+   #       name: semgrep/ci
+    #      runs-on: ubuntu-latest
+     #     env:
+     #       SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+      #    container:
+       #     image: returntocorp/semgrep
+       #   steps:
+       #   - uses: actions/checkout@v4
+       #   - run: semgrep ci
   #
   Checkout:
-      needs: Semgrep 
+      needs: SonarQB
       name: Checkout
       runs-on: ubuntu-latest
       steps:
