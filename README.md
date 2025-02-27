@@ -64,6 +64,9 @@ docker compose up -d
 # Use docker compose logs -f initializer to track its progress.
 docker compose logs initializer | grep "Admin password:"
 ```
+##Sonar
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=kblcka_MyPrj4dp)](https://sonarcloud.io/summary/new_code?id=kblcka_MyPrj4dp)
+
 
 ## For Docker Compose V1
 
