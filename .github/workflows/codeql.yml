@@ -79,7 +79,7 @@ jobs:
 #Проверка на наличие утечек 
 ###
   Gitleaks:
-      needs: SonarQB
+      needs: Checkout
       name: gitleaks
       runs-on: ubuntu-latest
       steps:
@@ -122,7 +122,7 @@ jobs:
 
     
   Checkout:
-      needs: SonarQB
+      needs: [ SonarQB, zap_scan ]
       name: Checkout
       runs-on: ubuntu-latest
       steps:
@@ -131,7 +131,7 @@ jobs:
 
   
   zap_scan: # https://github.com/zaproxy/action-baseline#rules_file_name
-    needs: [ SonarQB, Checkout ]
+    needs: Linter
     runs-on: ubuntu-latest
     name: Scan the webapplication
     steps:
