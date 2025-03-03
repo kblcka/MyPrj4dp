@@ -128,18 +128,10 @@ jobs:
       steps:
        - uses: actions/checkout@v4.2.2
 
-  ZAPproxy:
-    runs-on: ubuntu-latest
-    steps:
-    - name: ZAP Scan
-      uses: zaproxy/action-baseline@v0.14.0
-      with:
-        target: 'https://www.zaproxy.org'
-      
-      #on: [push]
 
   
-  zap_scan:
+  zap_scan: # https://github.com/zaproxy/action-baseline#rules_file_name
+    needs: [ SonarQB, Checkout ]
     runs-on: ubuntu-latest
     name: Scan the webapplication
     steps:
