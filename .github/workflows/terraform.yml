@@ -1,4 +1,4 @@
-name: Checkov # https://github.com/marketplace/actions/checkov-github-action
+name: Checkov test # https://github.com/marketplace/actions/checkov-github-action
 on: [push]
 jobs:
   checkov-job:
