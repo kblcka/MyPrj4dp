@@ -9,8 +9,25 @@ on:
     branches: [ "master" ]
   schedule:
     - cron: 00 23 * * *
-jobs:          
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v3
+      
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
   Linter:  # Причесываем код для проверок 
+    
      name: Lint
      runs-on: ubuntu-latest
 
@@ -37,7 +54,7 @@ jobs:
             continue-on-error: true # не прерываем на ошибке. 
         
 ###
-#Проверка на наличие утечек 
+#Проверка 
 ###
   Gitleaks:
       needs: Checkout
@@ -69,7 +86,7 @@ jobs:
               path: gitleaks-report/part_*
  
   SonarQB:
-      needs: Linter
+      needs: [ Linter, analyze ]
       name: SonarQube
       runs-on: ubuntu-latest
       steps:
@@ -92,7 +109,7 @@ jobs:
 
   
   zap_scan: # https://github.com/zaproxy/action-baseline#rules_file_name
-    needs: Linter
+    needs: [ Linter, analyze ]
     runs-on: ubuntu-latest
     name: Scan the webapplication
     steps:
