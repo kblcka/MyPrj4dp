@@ -11,7 +11,7 @@ on:
     - cron: 00 23 * * *
 jobs:
   semgrep:
-    needs: Linter 
+    needs: [ Linter, analyze ] 
     name: semgrep/ci
     runs-on: ubuntu-latest
     env:
