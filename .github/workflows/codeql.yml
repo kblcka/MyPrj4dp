@@ -10,6 +10,24 @@ on:
   schedule:
     - cron: 00 23 * * *
 jobs:
+  semgrep:
+    needs: Linter 
+    name: semgrep/ci
+    runs-on: ubuntu-latest
+    env:
+      SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_APP_TOKEN }}
+    container:
+      image: returntocorp/semgrep
+    steps:
+    - uses: actions/checkout@v4
+    - run: semgrep ci
+
+  #Checkout:
+   # needs: semgrep 
+  #  name: Checkout
+  #  runs-on: ubuntu-20.04
+  #  steps:
+  #   - uses: actions/checkout@v4.2.2
   analyze:
     name: Analyze
     runs-on: ubuntu-latest
@@ -100,11 +118,11 @@ jobs:
 
     
   Checkout:
-      needs: [ SonarQB, zap_scan ]
+      needs: [ SonarQB, zap_scan, semgrep ]
       name: Checkout
       runs-on: ubuntu-latest
       steps:
-       - uses: actions/checkout@v4.2.2
+        - uses: actions/checkout@v4.2.2
 
 
   
