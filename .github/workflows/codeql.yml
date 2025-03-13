@@ -39,8 +39,9 @@ jobs:
       
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
-  Linter:  # Причесываем код для проверок 
-    
+
+      
+  Linter:  # проверка кода на соответсвие правилам.
      name: Lint
      runs-on: ubuntu-latest
 
@@ -99,7 +100,7 @@ jobs:
               path: gitleaks-report/part_*
  
   SonarQB:
-      needs: [ Linter, analyze ]
+      needs: analyze
       name: SonarQube
       runs-on: ubuntu-latest
       steps:
@@ -122,7 +123,7 @@ jobs:
 
   
   zap_scan: # https://github.com/zaproxy/action-baseline#rules_file_name
-    needs: [ Linter, analyze ]
+    needs: analyze
     runs-on: ubuntu-latest
     name: Scan the webapplication
     steps:
@@ -140,7 +141,7 @@ jobs:
           cmd_options: '-a'
 
   Deploy_test:
-      needs: [ zap_scan, Gitleaks ]
+      needs: [ zap_scan, Gitleaks, Linter ]
       #needs: [semgrep, CodeQL, zap_scan]
       name: Deploy Test    
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
