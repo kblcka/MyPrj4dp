@@ -114,7 +114,7 @@ jobs:
 
     
   Checkout:
-      needs: semgrep
+#      needs: semgrep
       name: Checkout
       runs-on: ubuntu-latest
       steps:
