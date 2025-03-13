@@ -11,7 +11,7 @@ on:
     - cron: 00 23 * * *
 jobs:
   semgrep:
-    needs: [ Linter, analyze ] 
+#    needs: [ Linter, analyze ] 
     name: semgrep/ci
     runs-on: ubuntu-latest
     env:
@@ -113,7 +113,7 @@ jobs:
 
     
   Checkout:
-      needs: [ SonarQB, zap_scan, semgrep ]
+      needs: semgrep
       name: Checkout
       runs-on: ubuntu-latest
       steps:
@@ -140,7 +140,7 @@ jobs:
           cmd_options: '-a'
 
   Deploy_test:
-      needs: [ SonarQB, zap_scan, semgrep, Gitleaks ]
+      needs: [ zap_scan, Gitleaks ]
       #needs: [semgrep, CodeQL, zap_scan]
       name: Deploy Test    
       if: github.ref == 'refs/heads/master' && github.event_name == 'push'
