@@ -100,12 +100,12 @@ jobs:
           env:
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
     
-#  Checkout:
-#      needs: semgrep
-#      name: Checkout
-#      runs-on: ubuntu-latest
-#      steps:
-#        - uses: actions/checkout@v4.2.2
+  Checkout:
+      needs: semgrep
+      name: Checkout
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4.2.2
 
   zap_scan: # https://github.com/zaproxy/action-baseline#rules_file_name
     needs: analyze
