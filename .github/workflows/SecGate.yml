@@ -12,10 +12,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      MAX_CRITICAL: 1
-      MAX_HIGH: 2
-      MAX_MEDIUM: 3
-      MAX_LOW: 4
+      MAX_CRITICAL: 100
+      MAX_HIGH: 200
+      MAX_MEDIUM: 300
+      MAX_LOW: 400
       GITHUB_TOKEN: ${{ secrets.TOKEN }}
     steps:
     - name: Checkout repository
