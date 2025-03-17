@@ -13,7 +13,6 @@ on:
 
 jobs:
   semgrep:
-#    needs: [ Linter, analyze ] 
     name: semgrep/ci
     runs-on: ubuntu-latest
     env:
@@ -37,7 +36,7 @@ jobs:
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
       
-  Linter:  # проверка кода на соответсвие правилам.
+  Linter:  
      name: Lint
      runs-on: ubuntu-latest
      permissions:
@@ -62,7 +61,6 @@ jobs:
             continue-on-error: true # не прерываем на ошибке. 
         
   Gitleaks:
-      #needs: Checkout
       needs: TrivY 
       name: gitleaks
       runs-on: ubuntu-latest
@@ -156,8 +154,6 @@ jobs:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-   # name: Build
-   # runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -174,11 +170,7 @@ jobs:
           template: '@/contrib/sarif.tpl'
           output: 'trivy-results.sarif'
           severity: 'CRITICAL,HIGH'
-          #format: 'table'
-          #exit-code: '1'
           ignore-unfixed: true
-          #vuln-type: 'os,library'
-          #severity: 'CRITICAL,HIGH'
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v3
