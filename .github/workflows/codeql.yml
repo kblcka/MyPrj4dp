@@ -92,7 +92,7 @@ jobs:
               path: gitleaks-report/part_*
  
   SonarQB:
-      needs: [ Linter, analyze ]
+      needs: Linter
       name: SonarQube
       runs-on: ubuntu-latest
       steps:
