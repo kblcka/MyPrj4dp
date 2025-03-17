@@ -148,13 +148,12 @@ jobs:
   TrivY:
     name: Trivy
     runs-on: ubuntu-20.04
-  build:
     permissions:
       contents: read # for actions/checkout to fetch code
       security-events: write # for github/codeql-action/upload-sarif to upload SARIF results
       actions: read # only required for a private repository by github/codeql-action/upload-sarif to get the Action run status
-    name: Build
-    runs-on: ubuntu-latest
+   # name: Build
+   # runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -162,6 +161,7 @@ jobs:
       - name: Build an image from Dockerfile
         run: |
           docker build -t docker.io/kblcka/myprj4dp:${{ github.sha }} . 
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@0.28.0
         with:
@@ -180,5 +180,3 @@ jobs:
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: 'trivy-results.sarif'
-          
-
