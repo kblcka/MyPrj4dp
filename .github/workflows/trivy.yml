@@ -31,7 +31,7 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker-compose up 'docker.io/kblcka/MyPrj4dp/docker-compose.yml:${{ github.sha }}' 
+          compose 'docker.io/kblcka/MyPrj4dp/docker-compose.yml:${{ github.sha }}' 
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@7b7aa264d83dc58691451798b4d117d53d21edfe
