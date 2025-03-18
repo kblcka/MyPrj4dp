@@ -4,6 +4,7 @@ on:
     branches: 
     - main
     - master
+    - Test
     - release/*
     paths:
     - .github/workflows/codeql.yml
